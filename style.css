@@ -514,6 +514,13 @@ body {
     font-size: 1.2rem;
 }
 
+.stat-card p {
+    font-family: var(--font-tech);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+}
+
 /* Core Directives */
 .directives-grid {
     display: grid;
@@ -595,8 +602,11 @@ body {
 }
 
 .directive-card p {
+    font-family: var(--font-tech);
     color: var(--text-dim);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
 }
 
 /* Gallery Section */
