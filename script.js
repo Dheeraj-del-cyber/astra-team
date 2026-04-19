@@ -106,18 +106,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Navbar Scroll Effect ---
     const navbar = document.getElementById('navbar');
+    let scrollProgress = document.getElementById('scroll-progress');
+    let isScrolling = false;
+
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                
+                // Update Scroll Progress Bar
+                if (scrollProgress) {
+                    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const scrolled = (window.scrollY / scrollHeight) * 100;
+                    scrollProgress.style.width = scrolled + '%';
+                }
+                isScrolling = false;
+            });
+            isScrolling = true;
         }
-        
-        // Update Scroll Progress Bar
-        const scrollProgress = document.getElementById('scroll-progress');
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrolled = (window.scrollY / scrollHeight) * 100;
-        scrollProgress.style.width = scrolled + '%';
     });
 
     // --- Sound Control ---

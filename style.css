@@ -1192,184 +1192,308 @@ body {
     z-index: -2;
     overflow: hidden;
     background: radial-gradient(circle at 50% 50%, #050505 0%, #000000 100%);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 25px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.member-links {
+    display: flex;
+    gap: 25px;
+    margin-top: auto;
+}
+
+/* --- Member Portraits --- */
+.member-photo-wrapper {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 25px;
+    border-radius: 50%;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.lead-card .member-photo-wrapper {
+    width: 180px;
+    height: 180px;
+    border-color: #ffffff;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+}
+
+/* Scanning Effect for Portraits */
+.member-photo-wrapper::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: scanLine 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scanLine {
+    0% { top: -100%; }
+    100% { top: 100%; }
+}
+
+.member-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(1.1) contrast(1.1) saturate(0.8);
+    transition: var(--transition-smooth);
+}
+
+.member-card:hover .member-photo-wrapper {
+    transform: scale(1.05);
+    border-color: #fff;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
+}
+
+.member-card:hover .member-photo {
+    transform: scale(1.1);
+}
+
+.member-links a {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+}
+
+.member-links a:hover {
+    color: #fff;
+    transform: translateY(-3px) scale(1.2);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* --- Lead & Co-Lead Elite Styles --- */
+.lead-card {
+    min-width: 400px;
+    padding: 80px 40px;
+    clip-path: polygon(50% 0%, 100% 12%, 100% 88%, 50% 100%, 0% 88%, 0% 12%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 100%);
+    animation: float 4s ease-in-out infinite;
+    border: none;
+}
+
+.lead-card::after {
+    clip-path: polygon(50% 0%, 100% 12%, 100% 88%, 50% 100%, 0% 88%, 0% 12%);
+    background: linear-gradient(135deg, #fff, transparent);
+}
+
+.lead-card i.fa-crown {
+    font-size: 5rem;
+    color: #fff;
+    margin-bottom: 25px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+}
+
+.lead-card h3 {
+    font-size: 2.8rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.lead-card .role {
+    color: #000;
+    background: #fff;
+    padding: 6px 20px;
+    border-radius: 4px;
+    font-weight: 800;
+    box-shadow: 0 0 25px rgba(255,255,255,0.6);
+}
+
+.co-lead-card {
+    min-width: 340px;
+    padding: 60px 30px;
+    animation: float 4s ease-in-out infinite;
+    animation-delay: 1.5s;
+    border: none;
+}
+
+.co-lead-card i.fa-shield-alt {
+    font-size: 4rem;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+}
+
+.co-lead-card h3 {
+    font-size: 2.2rem;
+}
+
+.co-lead-card .role {
+    color: #000;
+    background: rgba(255,255,255,0.8);
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Robotics Specific Sizing */
+.robotics-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.robotics-grid .member-card {
+    width: 200px;
+    padding: 50px 20px;
+    clip-path: polygon(50% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%, 0% 15%);
+}
+
+.robotics-grid .member-photo-wrapper {
+    width: 100px;
+    height: 100px;
+}
+
+.robotics-grid .member-card h3 {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+}
+
+.robotics-grid .member-card .role {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+}
+
+.robotics-grid .member-links a {
+    font-size: 1.4rem;
+}
+
+/* --- Cinematic Team Background FX --- */
+.team-bg-fx {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #050505 0%, #000000 100%);
     pointer-events: none;
 }
 
 .glow-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.15;
+    filter: blur(80px);
+    opacity: 0.12;
     animation: floatOrb 20s infinite alternate ease-in-out;
+    will-change: transform;
+    pointer-events: none;
 }
 
-.orb-1 {
-    width: 600px;
-    height: 600px;
-    background: var(--primary-red);
-    top: -10%;
-    left: -10%;
-    animation-duration: 25s;
-}
-
-.orb-2 {
-    width: 500px;
-    height: 500px;
-    background: #444;
-    bottom: -10%;
-    right: -10%;
-    animation-duration: 30s;
-    animation-delay: -5s;
-}
-
-.orb-3 {
-    width: 400px;
-    height: 400px;
-    background: var(--primary-blue);
-    top: 40%;
-    left: 50%;
-    animation-duration: 35s;
-    animation-delay: -10s;
-}
+.orb-1 { width: 600px; height: 600px; background: var(--primary-red); top: -10%; left: -10%; animation-duration: 25s; }
+.orb-2 { width: 500px; height: 500px; background: #444; bottom: -10%; right: -10%; animation-duration: 30s; animation-delay: -5s; }
+.orb-3 { width: 400px; height: 400px; background: var(--primary-blue); top: 40%; left: 50%; animation-duration: 35s; animation-delay: -10s; }
 
 @keyframes floatOrb {
-    0% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(50px, 100px) scale(1.1); }
-    66% { transform: translate(-80px, 40px) scale(0.9); }
-    100% { transform: translate(20px, -60px) scale(1); }
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    33% { transform: translate3d(40px, 80px, 0) scale(1.05); }
+    66% { transform: translate3d(-60px, 30px, 0) scale(0.95); }
+    100% { transform: translate3d(15px, -40px, 0) scale(1); }
 }
 
-/* Mobile Overrides for Team Cards */
+/* --- Mobile Overrides & Optimization --- */
 @media (max-width: 768px) {
-    .team-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 15px;
-    }
-
-    .member-card {
-        padding: 20px 15px;
-        border-radius: 15px;
-    }
-
-    .member-card i.fa-user-circle {
-        font-size: 2.2rem;
-        margin-bottom: 10px;
-    }
-
-    .member-card h3 {
-        font-size: 1.1rem;
-        letter-spacing: 1px;
-    }
-
-    .member-card .role {
-        font-size: 0.55rem;
-        letter-spacing: 1px;
-        margin-bottom: 12px;
-    }
-
-    .member-links {
-        gap: 12px;
-    }
-
-    .member-links a {
-        font-size: 1rem;
-    }
-
-    .leader-grid {
-        gap: 15px;
-    }
-
-    .leader-card {
-        width: 100%;
-        max-width: 260px;
-    }
-
-    .team-category h2 {
-        font-size: 2rem;
-    }
-
-    .main-team-title {
-        font-size: 2rem;
-        letter-spacing: 5px;
-        margin-right: -5px;
-        white-space: normal; /* Allow wrapping on very small screens if needed */
-        line-height: 1.2;
-    }
-
-    .member-photo-wrapper {
-        width: 100px !important;
-        height: 100px !important;
-        margin-bottom: 15px;
-    }
-
-    .lead-card .member-photo-wrapper {
-        width: 130px !important;
-        height: 130px !important;
-    }
+    .team-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+    .member-card { padding: 20px 15px; border-radius: 12px; animation: none !important; }
+    .leader-card { width: 100%; max-width: 260px; }
+    .main-team-title { font-size: 2rem; letter-spacing: 3px; }
+    .member-photo-wrapper { width: 90px !important; height: 90px !important; }
+    .lead-card .member-photo-wrapper { width: 120px !important; height: 120px !important; }
+    .avengers-ring { display: none !important; } /* High performance cost */
+    .glow-orb { filter: blur(40px); opacity: 0.08; }
 }
-/* --- Avengers 3D Tech Rings --- */
+
+/* --- Avengers 3D Tech Rings (Desktop Only Optimization) --- */
 .avengers-ring {
     position: absolute;
-    border: 2px dashed rgba(255, 255, 255, 0.15);
+    border: 1px dashed rgba(255, 255, 255, 0.08);
     border-radius: 50%;
     pointer-events: none;
     z-index: -1;
     transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform;
 }
 
 .ring-1 {
-    width: 1400px;
-    height: 1400px;
-    top: -30%;
-    right: -25%;
-    animation: rotate3D 60s linear infinite;
-    opacity: 0.05;
+    width: 1400px; height: 1400px; top: -30%; right: -25%;
+    animation: rotate3D 90s linear infinite;
+    opacity: 0.04;
 }
 
 .ring-2 {
-    width: 1000px;
-    height: 1000px;
-    bottom: -10%;
-    left: -15%;
-    border-style: double;
-    border-width: 20px;
-    animation: rotate3DRev 40s linear infinite;
-    opacity: 0.03;
+    width: 1000px; height: 1000px; bottom: -10%; left: -15%;
+    border-style: double; border-width: 10px;
+    animation: rotate3DRev 70s linear infinite;
+    opacity: 0.02;
 }
 
 @keyframes rotate3D {
-    0% { transform: perspective(2000px) rotateX(65deg) rotateZ(0deg); }
-    100% { transform: perspective(2000px) rotateX(65deg) rotateZ(360deg); }
+    0% { transform: perspective(1500px) rotateX(65deg) rotateZ(0deg) translate3d(0,0,0); }
+    100% { transform: perspective(1500px) rotateX(65deg) rotateZ(360deg) translate3d(0,0,0); }
 }
 
 @keyframes rotate3DRev {
-    0% { transform: perspective(2000px) rotateX(-55deg) rotateZ(360deg); }
-    100% { transform: perspective(2000px) rotateX(-55deg) rotateZ(0deg); }
+    0% { transform: perspective(1500px) rotateX(-55deg) rotateZ(360deg) translate3d(0,0,0); }
+    100% { transform: perspective(1500px) rotateX(-55deg) rotateZ(0deg) translate3d(0,0,0); }
 }
 
-/* --- Global Holographic HUD Overlay --- */
+/* --- Performance Scroller Reveal --- */
+.reveal, .reveal-delay, .reveal-delay-2, .reveal-delay-3 {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s linear;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+.reveal.active, .reveal-delay.active, .reveal-delay-2.active, .reveal-delay-3.active {
+    opacity: 1; transform: translate3d(0, 0, 0);
+}
+
+.reveal-delay { transition-delay: 0.05s; }
+.reveal-delay-2 { transition-delay: 0.1s; }
+.reveal-delay-3 { transition-delay: 0.15s; }
+
+/* Global GPU Layering */
+.member-card, .hero-video, .team-bg-fx, .glow-orb, .avengers-ring {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* CRT Overlay Optimization */
 body::after {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Subtle horizontal scanlines */
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.08) 0px,
-        rgba(0, 0, 0, 0.08) 1px,
-        transparent 1px,
-        transparent 4px
-    );
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 4px);
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.4;
-    animation: hudFlicker 0.15s infinite alternate;
+    opacity: 0.3;
+    animation: hudFlicker 0.3s infinite alternate;
 }
 
 @keyframes hudFlicker {
-    0% { opacity: 0.35; }
-    100% { opacity: 0.45; }
+    0% { opacity: 0.28; }
+    100% { opacity: 0.32; }
 }
