@@ -17,36 +17,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isInitComplete = false;
 
+    // --- Check for Skip Intro Parameter ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const skipIntro = urlParams.get('skipIntro') === 'true';
+
     const finishInitialization = () => {
         isInitComplete = true; // Mark system as active
-        preloader.style.transition = 'opacity 0.8s ease';
-        preloader.style.opacity = '0';
+        if (preloader) {
+            preloader.style.transition = 'opacity 0.8s ease';
+            preloader.style.opacity = '0';
+        }
         setTimeout(() => {
             if (preloader) preloader.style.display = 'none';
             const heroContent = document.querySelector('.hero-content');
             if (heroContent) heroContent.classList.add('start-animation');
             
             // Explicitly start the hero video now
-            if (heroVideo) heroVideo.play();
+            if (heroVideo) heroVideo.play().catch(() => {});
             
             // Unmute and handle audio sequence
             startAudioOnInteraction();
         }, 800);
     };
 
-    if (startOverlay && initVideo) {
+    if (skipIntro) {
+        // FAST PATH: Return from Team page
+        if (preloader) preloader.style.display = 'none';
+        if (startOverlay) startOverlay.style.display = 'none';
+        isInitComplete = true;
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) heroContent.classList.add('start-animation');
+        // Start background ripples
+        setTimeout(() => {
+            if (typeof $ !== 'undefined' && $('body').ripples) {
+                $('body').ripples('updateSize');
+            }
+        }, 500);
+    } else if (startOverlay && initVideo) {
+        // STANDARD PATH: First visit
         startOverlay.addEventListener('click', () => {
-            startOverlay.style.display = 'none'; // Hide overlay
-            initVideo.style.display = 'block'; // Show video
+            startOverlay.style.display = 'none'; 
+            initVideo.style.display = 'block'; 
             
             initVideo.play().then(() => {
-                // Video is playing
                 initVideo.onended = () => {
                     finishInitialization();
                 };
             }).catch(err => {
                 console.log("Initialization video failed:", err);
-                finishInitialization(); // Fallback
+                finishInitialization(); 
             });
         });
     } else {
@@ -155,34 +174,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryItems = document.querySelectorAll('.gallery-item');
     const closeLightbox = document.querySelector('.close-lightbox');
 
-    galleryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            lightbox.style.display = 'block';
-            lightboxImg.src = item.getAttribute('data-src');
-            captionText.innerHTML = item.querySelector('img').alt;
-            document.body.style.overflow = 'hidden'; // Stop scrolling
+    if (lightbox && closeLightbox) {
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                lightbox.style.display = 'block';
+                const img = item.querySelector('img');
+                if (img) {
+                    lightboxImg.src = item.getAttribute('data-src') || img.src;
+                    captionText.innerHTML = img.alt;
+                }
+                document.body.style.overflow = 'hidden'; 
+            });
         });
-    });
 
-    closeLightbox.addEventListener('click', () => {
-        lightbox.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Resume scrolling
-    });
-
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
+        closeLightbox.addEventListener('click', () => {
             lightbox.style.display = 'none';
             document.body.style.overflow = 'auto';
-        }
-    });
+        });
 
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    // --- Mobile Menu Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        menuToggle.classList.toggle('active'); // Optional: can be used to animate hamburger
-    });
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+    }
 
     // Smooth scroll for nav links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

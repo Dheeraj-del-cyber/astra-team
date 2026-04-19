@@ -1127,4 +1127,12 @@ body {
     .team-category h2 {
         font-size: 2rem;
     }
+
+    .main-team-title {
+        font-size: 2rem;
+        letter-spacing: 5px;
+        margin-right: -5px;
+        white-space: normal; /* Allow wrapping on very small screens if needed */
+        line-height: 1.2;
+    }
 }
