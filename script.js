@@ -25,7 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
             preloader.style.display = 'none';
             document.querySelector('.hero-content').classList.add('start-animation');
             
-            // Start background music now that initialization has ended
+            // Explicitly start the hero video now
+            heroVideo.play();
+            
+            // Unmute and handle audio sequence
             startAudioOnInteraction();
         }, 800);
     };
@@ -57,22 +60,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isInitComplete) return; // Prevent background music from overlapping the initialization video!
 
         if (!isPlaying) {
-            const playPromise = bgMusic.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    isPlaying = true;
-                    soundIcon.classList.remove('fa-volume-mute');
-                    soundIcon.classList.add('fa-volume-up');
-                    soundToggle.style.borderColor = 'var(--primary-blue)';
-                    // heroVideo.muted = false; // Keep video muted to prevent overlapping audio
-                    console.log("Audio sequence initiated via user interaction.");
-                    
-                    // Remove listeners ONLY after successful playback
-                    document.removeEventListener('click', startAudioOnInteraction);
-                    document.removeEventListener('touchstart', startAudioOnInteraction);
-                    document.removeEventListener('touchend', startAudioOnInteraction);
-                }).catch(err => console.log("Interaction playback failed, waiting for next touch:", err));
-            }
+            heroVideo.muted = false;
+            heroVideo.play().then(() => {
+                isPlaying = true;
+                soundIcon.classList.remove('fa-volume-mute');
+                soundIcon.classList.add('fa-volume-up');
+                soundToggle.style.borderColor = 'var(--primary-blue)';
+                console.log("Hero video sound initiated via user interaction.");
+                
+                // Remove listeners ONLY after successful playback
+                document.removeEventListener('click', startAudioOnInteraction);
+                document.removeEventListener('touchstart', startAudioOnInteraction);
+                document.removeEventListener('touchend', startAudioOnInteraction);
+            }).catch(err => console.log("Interaction playback failed, waiting for next touch:", err));
         }
     };
 
@@ -98,27 +98,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Sound Control ---
     const soundToggle = document.getElementById('sound-toggle');
-    const bgMusic = document.getElementById('bg-music');
     const heroVideo = document.getElementById('hero-video');
     const soundIcon = soundToggle.querySelector('i');
     let isPlaying = false;
 
     soundToggle.addEventListener('click', () => {
         if (!isPlaying) {
-            bgMusic.play().then(() => {
+            heroVideo.muted = false;
+            heroVideo.play().then(() => {
                 isPlaying = true;
                 soundIcon.classList.remove('fa-volume-mute');
                 soundIcon.classList.add('fa-volume-up');
                 soundToggle.style.borderColor = 'var(--primary-blue)';
-                // heroVideo.muted = false; // Sync video sound if user wants (Disabled to prevent echo)
             }).catch(err => console.log("Audio playback failed:", err));
         } else {
-            bgMusic.pause();
+            heroVideo.muted = true;
             isPlaying = false;
             soundIcon.classList.remove('fa-volume-up');
             soundIcon.classList.add('fa-volume-mute');
             soundToggle.style.borderColor = 'var(--glass-border)';
-            heroVideo.muted = true;
         }
     });
 
