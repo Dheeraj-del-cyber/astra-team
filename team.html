@@ -22,13 +22,14 @@
 <body>
 
     <!-- Team Initialization Video Overlay -->
-    <div id="team-init-overlay" style="position: fixed; inset: 0; z-index: 100000; background: #000; overflow: hidden;">
-        <video id="team-init-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;">
-            <source src="team initialization/video12.mp4" type="video/mp4">
+    <div id="team-init-overlay" style="position: fixed; inset: 0; z-index: 100000; background: #000; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+        <!-- Fullscreen Video (Autoplay with Sound) -->
+        <video id="team-init-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 100001;">
+            <source src="team initialization/InShot_20260420_103519614.mp4" type="video/mp4">
         </video>
+        
         <button id="skip-team-init"
-            style="position: absolute; bottom: 40px; right: 40px; z-index: 100001; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 25px; cursor: pointer; border-radius: 30px; font-family: 'Poppins', sans-serif; backdrop-filter: blur(10px); letter-spacing: 2px; transition: 0.3s; text-transform: uppercase; font-size: 0.8rem;">Skip
-            Intro</button>
+            style="position: absolute; bottom: 40px; right: 40px; z-index: 100003; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 25px; cursor: pointer; border-radius: 30px; font-family: 'Poppins', sans-serif; backdrop-filter: blur(10px); letter-spacing: 2px; transition: 0.3s; text-transform: uppercase; font-size: 0.8rem;">Skip Intro</button>
     </div>
 
     <!-- Main Team Content (Initially Hidden) -->
@@ -224,9 +225,9 @@
 
     </div> <!-- End Page Wrapper -->
 
-    <!-- Audio Element (Dummy for script.js compatibility) -->
+    <!-- Audio Element (Background Music) -->
     <audio id="bg-music" loop style="display: none;">
-        <source src="" type="audio/mpeg">
+        <source src="song/WhatsApp Audio 2026-04-20 at 12.04.39 PM.mp4" type="video/mp4">
     </audio>
 
     <!-- Liquid Metal Ripple Scripts -->
@@ -240,19 +241,93 @@
         const teamInitVideo = document.getElementById('team-init-video');
         const skipBtn = document.getElementById('skip-team-init');
 
+        // --- Sound Toggle Logic ---
+        const soundToggle = document.getElementById('sound-toggle');
+        const bgMusic = document.getElementById('bg-music');
+        const soundIcon = soundToggle.querySelector('i');
+        let isMusicPlaying = false;
+
+        function toggleSound() {
+            if (!bgMusic) return;
+            
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    soundIcon.className = 'fas fa-volume-up';
+                    soundToggle.style.borderColor = 'var(--primary-blue)';
+                }).catch(e => console.log("Sound toggle failed:", e));
+            } else {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                soundIcon.className = 'fas fa-volume-mute';
+                soundToggle.style.borderColor = 'var(--glass-border)';
+            }
+        }
+
+        if (soundToggle) {
+            soundToggle.onclick = toggleSound;
+        }
+
+        // Update exitTeamIntro to sync icon
+        function updateSoundIcon() {
+            if (bgMusic && !bgMusic.paused) {
+                soundIcon.className = 'fas fa-volume-up';
+                soundToggle.style.borderColor = 'var(--primary-blue)';
+            }
+        }
+
         function exitTeamIntro() {
-            teamOverlay.style.transition = 'all 1s ease';
+            teamOverlay.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
             teamOverlay.style.opacity = '0';
             teamWrapper.style.opacity = '1';
+            
+            // Stop initialization video
+            teamInitVideo.pause();
+            
+            // Play background music
+            if (bgMusic) {
+                bgMusic.play().then(() => {
+                    updateSoundIcon();
+                }).catch(e => console.log("Background music blocked until interaction."));
+            }
+            
             setTimeout(() => {
                 teamOverlay.style.display = 'none';
-                // Trigger ripples
                 $('body').ripples('updateSize');
             }, 1000);
         }
 
+        // Global attempt to unmute on first interaction if blocked by browser
+        const unmuteOnInteraction = () => {
+            if (teamInitVideo && !teamInitVideo.paused) {
+                teamInitVideo.muted = false;
+                document.removeEventListener('click', unmuteOnInteraction);
+                document.removeEventListener('touchstart', unmuteOnInteraction);
+            }
+        };
+        document.addEventListener('click', unmuteOnInteraction);
+        document.addEventListener('touchstart', unmuteOnInteraction);
+
         teamInitVideo.onended = exitTeamIntro;
         skipBtn.onclick = exitTeamIntro;
+
+        // Auto-play attempt
+        window.addEventListener('load', () => {
+            // Attempt unmuted play (Relies on user interaction from previous page)
+            const playPromise = teamInitVideo.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Autoplay with sound started!
+                    console.log("Unmuted autoplay successful.");
+                }).catch(error => {
+                    // Autoplay with sound was prevented
+                    console.log("Unmuted autoplay blocked by browser. Falling back to muted.");
+                    teamInitVideo.muted = true;
+                    teamInitVideo.play();
+                });
+            }
+        });
 
         // Ripple Effect initialization
         $(document).ready(function () {
