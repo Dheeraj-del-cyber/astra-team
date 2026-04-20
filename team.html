@@ -27,9 +27,13 @@
         <video id="team-init-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 100001; pointer-events: none;">
             <source src="team initialization/InShot_20260420_103519614.mp4" type="video/mp4">
         </video>
+
+        <!-- Invisible Audio Unlocker -->
+        <div id="audio-unlocker" style="position: absolute; inset: 0; z-index: 100002; cursor: pointer;"></div>
         
         <button id="skip-team-init"
             style="position: absolute; bottom: 40px; right: 40px; z-index: 100003; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 25px; cursor: pointer; border-radius: 30px; font-family: 'Poppins', sans-serif; backdrop-filter: blur(10px); letter-spacing: 2px; transition: 0.3s; text-transform: uppercase; font-size: 0.8rem;">Skip Intro</button>
+        <p style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; color: rgba(255,255,255,0.2); font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 5px; z-index: 100004; pointer-events: none;">Theme: Avengers</p>
     </div>
 
     <!-- Main Team Content (Initially Hidden) -->
@@ -307,22 +311,35 @@
             }, 1000);
         }
 
-        // Global attempt to unmute and RESUME on first interaction if blocked by browser
-        const unmuteOnInteraction = () => {
+        // Invisible Audio Unlocker Logic
+        const audioUnlocker = document.getElementById('audio-unlocker');
+        
+        const handleAudioUnlock = () => {
             if (teamInitVideo) {
                 teamInitVideo.muted = false;
-                // Force play to ensure it resumes on mobile if interaction paused it or if it was blocked
-                const retryPlay = teamInitVideo.play();
-                if (retryPlay !== undefined) {
-                    retryPlay.catch(e => console.log("Final playback attempt failed:", e));
+                // Force a resume in case mobile browser paused it
+                const playRequest = teamInitVideo.play();
+                if (playRequest !== undefined) {
+                    playRequest.catch(() => {
+                        // If it fails unmuted, silent play to avoid freezing
+                        teamInitVideo.muted = true;
+                        teamInitVideo.play();
+                    });
                 }
-                
-                document.removeEventListener('click', unmuteOnInteraction);
-                document.removeEventListener('touchstart', unmuteOnInteraction);
             }
+            if (audioUnlocker) audioUnlocker.style.display = 'none';
+            document.removeEventListener('click', handleAudioUnlock);
+            document.removeEventListener('touchstart', handleAudioUnlock);
         };
-        document.addEventListener('click', unmuteOnInteraction);
-        document.addEventListener('touchstart', unmuteOnInteraction);
+
+        if (audioUnlocker) {
+            audioUnlocker.addEventListener('click', handleAudioUnlock);
+            audioUnlocker.addEventListener('touchstart', handleAudioUnlock);
+        }
+        
+        // General backup listeners
+        document.addEventListener('click', handleAudioUnlock);
+        document.addEventListener('touchstart', handleAudioUnlock);
 
         teamInitVideo.onended = exitTeamIntro;
         skipBtn.onclick = exitTeamIntro;
