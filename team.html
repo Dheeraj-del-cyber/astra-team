@@ -79,7 +79,7 @@
         <section class="team-section">
             <div class="container">
                 <div class="section-header reveal">
-                    <h1 class="section-title main-team-title">THE&nbsp;<span
+                    <h1 class="section-title main-team-title" style="animation: mainTitleEntry 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) both 1s;">THE&nbsp;<span
                             class="text-gradient">TEAM</span>&nbsp;ASTRA</h1>
                     <div class="divider"></div>
                     <p
@@ -277,10 +277,20 @@
         }
 
         function exitTeamIntro() {
-            teamOverlay.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
-            teamOverlay.style.opacity = '0';
-            teamWrapper.style.opacity = '1';
+            // Initial flash/glitch state
+            teamWrapper.style.filter = 'blur(40px) brightness(2) contrast(300%)';
+            teamWrapper.style.opacity = '0';
             
+            teamOverlay.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+            teamOverlay.style.opacity = '0';
+            
+            // Materialize the content
+            setTimeout(() => {
+                teamWrapper.style.transition = 'opacity 1s ease-out, filter 1.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                teamWrapper.style.opacity = '1';
+                teamWrapper.style.filter = 'blur(0) brightness(1) contrast(100%)';
+            }, 100);
+
             // Stop initialization video
             teamInitVideo.pause();
             
