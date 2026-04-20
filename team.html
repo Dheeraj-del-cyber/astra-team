@@ -315,31 +315,43 @@
         const audioUnlocker = document.getElementById('audio-unlocker');
         
         const handleAudioUnlock = () => {
+            // 1. Silent trigger to unlock global audio context (crucial for iOS)
+            const silent = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA== ");
+            silent.play().catch(() => {});
+
             if (teamInitVideo) {
+                // 2. Explcitly unmute and set volume
                 teamInitVideo.muted = false;
-                // Force a resume in case mobile browser paused it
+                teamInitVideo.volume = 1.0;
+                
+                // 3. Force playback resume
                 const playRequest = teamInitVideo.play();
                 if (playRequest !== undefined) {
                     playRequest.catch(() => {
-                        // If it fails unmuted, silent play to avoid freezing
+                        console.log("Unmuted play blocked even on touch. Using muted fallback.");
                         teamInitVideo.muted = true;
                         teamInitVideo.play();
                     });
                 }
             }
+            
+            // Cleanup
             if (audioUnlocker) audioUnlocker.style.display = 'none';
             document.removeEventListener('click', handleAudioUnlock);
             document.removeEventListener('touchstart', handleAudioUnlock);
+            document.removeEventListener('mousedown', handleAudioUnlock);
         };
 
         if (audioUnlocker) {
             audioUnlocker.addEventListener('click', handleAudioUnlock);
             audioUnlocker.addEventListener('touchstart', handleAudioUnlock);
+            audioUnlocker.addEventListener('mousedown', handleAudioUnlock);
         }
         
         // General backup listeners
         document.addEventListener('click', handleAudioUnlock);
         document.addEventListener('touchstart', handleAudioUnlock);
+        document.addEventListener('mousedown', handleAudioUnlock);
 
         teamInitVideo.onended = exitTeamIntro;
         skipBtn.onclick = exitTeamIntro;
