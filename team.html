@@ -232,8 +232,8 @@
     </div> <!-- End Page Wrapper -->
 
     <!-- Audio Element (Background Music) -->
-    <audio id="bg-music" loop style="display: none;">
-        <source src="song/WhatsApp Video 2026-04-20 at 10.50.30 PM.mp4" type="video/mp4">
+    <audio id="bg-music" loop preload="auto" style="display: none;">
+        <source src="song/WhatsApp Video 2026-04-20 at 10.50.30 PM.mp4">
     </audio>
 
     <!-- Liquid Metal Ripple Scripts -->
@@ -332,18 +332,20 @@
             const silent = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA== ");
             silent.play().catch(() => {});
 
-            // 2. Play initialization video (fallback for blocked autoplay)
+            // 2. Dual Play - Explicitly start both to satisfy Instagram/Mobile policies
             if (teamInitVideo) {
-                teamInitVideo.play().catch(e => console.log("Video play failed on click:", e));
+                teamInitVideo.muted = true; // Stay muted for video
+                teamInitVideo.play().catch(e => console.log("Video fail:", e));
             }
 
             if (bgMusic) {
-                // 3. Play background music
+                bgMusic.muted = false;
+                bgMusic.volume = 1.0;
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     updateSoundIcon();
                 }).catch(e => {
-                    console.log("Background music playback failed:", e);
+                    console.log("Music fail:", e);
                 });
             }
             

@@ -59,6 +59,13 @@ document.addEventListener('DOMContentLoaded', () => {
             startOverlay.style.display = 'none'; 
             initVideo.style.display = 'block'; 
             
+            // Warm up the hero video (muted) so it's ready to go after the intro
+            const heroVid = document.getElementById('hero-video');
+            if (heroVid) {
+                heroVid.muted = true;
+                heroVid.play().catch(e => console.log("Hero warm-up blocked:", e));
+            }
+
             initVideo.play().then(() => {
                 initVideo.onended = () => {
                     finishInitialization();
