@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Inter+Tight:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>VTU SGPA & CGPA Calculator</title>
+
+<style>
+  body {
+    font-family: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    color: #333;
+  }
+
+  h1, h2 {
+    text-align: center;
+    color: #000000;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1.1;
+  }
+
+  h1 {
+    font-size: 2.8em;
+    margin-bottom: 10px;
+    font-weight: 800;
+    letter-spacing: -0.06em;
+  }
+
+  h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .header-row,
+  .row {
+    display: grid;
+    grid-template-columns: 0.4fr 1.4fr 0.6fr 0.6fr 0.4fr;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .header-row {
+    font-weight: 600;
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 8px;
+  }
+
+  .row {
+    margin-bottom: 10px;
+  }
+
+  .index {
+    text-align: center;
+    font-weight: 600;
+    color: #2563eb;
+  }
+
+  .input-group {
+    margin-bottom: 16px;
+  }
+
+  .input-group label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    background: white;
+  }
+
+  .input-group input::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+  }
+
+  .subject-input {
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+  }
+
+  .subject-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    background: white;
+  }
+
+  .subject-input::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+  }
+
+  .fail {
+    background: rgba(254, 226, 226, 0.9);
+  }
+
+  .fail input {
+    border-color: #dc2626;
+  }
+
+  .delete {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  .delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+  }
+
+  button.main {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .add { 
+    background: linear-gradient(135deg, #667eea, #764ba2); 
+    color: white; 
+  }
+
+  .add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  }
+
+  .sgpa { 
+    background: linear-gradient(135deg, #16a34a, #15803d); 
+    color: white; 
+  }
+
+  .sgpa:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+  }
+
+  .cgpa { 
+    background: linear-gradient(135deg, #7c3aed, #6d28d9); 
+    color: white; 
+  }
+
+  .cgpa:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+  }
+
+  .result {
+    margin-top: 16px;
+    padding: 18px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 14px;
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .app-footer {
+    margin-top: 40px;
+    padding: 20px 16px;
+    text-align: center;
+    font-size: 16px;
+    color: #000000;
+    border-top: 2px solid rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+  }
+
+  .app-footer span {
+    font-weight: 700;
+  }
+
+  .instagram-link {
+    color: #000000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+  }
+
+  .instagram-link:hover {
+    color: #E4405F;
+    opacity: 1;
+    text-decoration: none;
+  }
+
+  .instagram-link svg {
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+    transition: all 0.3s ease;
+  }
+
+  .instagram-link:hover svg {
+    transform: scale(1.05);
+  }
+
+  /* Mobile friendly */
+  @media (max-width: 600px) {
+    .app-footer {
+      font-size: 15px;
+      padding: 16px 12px;
+    }
+  }
+
+  .green { 
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0); 
+    color: #166534; 
+    border: 1px solid #16a34a;
+  }
+  
+  .red { 
+    background: linear-gradient(135deg, #fee2e2, #fecaca); 
+    color: #991b1b; 
+    border: 1px solid #dc2626;
+  }
+
+  .yellow { 
+    background: linear-gradient(135deg, #fef3c7, #fde68a); 
+    color: #92400e; 
+    border: 1px solid #f59e0b;
+  }
+
+  @media (max-width: 600px) {
+    .header-row, .row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>VTU SGPA & CGPA Calculator</h1>
+
+  <div class="card">
+    <h2>Subjects</h2>
+
+    
+    <div id="subjects"></div>
+
+    <button class="main add" onclick="addSubject()">➕ Add Subject</button>
+    <button class="main sgpa" onclick="calculateSGPA()">Calculate SGPA</button>
+    <div id="sgpaResult" class="result"></div>
+  </div>
+
+  <div class="card">
+    <h2>CGPA (from SGPAs)</h2>
+    <div class="input-group">
+      <label for="cgpaInput">Enter SGPAs (comma-separated)</label>
+      <input id="cgpaInput" placeholder="Example: 7.8, 8.2, 6.9">
+    </div>
+    <button class="main cgpa" onclick="calculateCGPA()">Calculate CGPA</button>
+    <div id="cgpaResult" class="result"></div>
+  </div>
+  <div class="card">
+  <h2>🎯 Target CGPA Planner</h2>
+
+  <div class="input-group">
+    <label for="currentCgpa">Current CGPA</label>
+    <input id="currentCgpa" type="number" step="0.01" placeholder="e.g. 7.2">
+  </div>
+
+  <div class="input-group">
+    <label for="semCompleted">Semesters Completed</label>
+    <input id="semCompleted" type="number" placeholder="e.g. 4">
+  </div>
+
+  <div class="input-group">
+    <label for="targetCgpa">Target CGPA</label>
+    <input id="targetCgpa" type="number" step="0.01" placeholder="e.g. 8.0">
+  </div>
+
+  <div class="input-group">
+    <label for="totalSem">Total Semesters</label>
+    <input id="totalSem" type="number" value="8" placeholder="e.g. 8">
+  </div>
+
+  <button class="main cgpa" onclick="calculateTarget()">Calculate Required SGPA</button>
+
+  <div id="targetResult" class="result"></div>
+  <button class="main delete" onclick="clearAll()">Clear All Data</button>
+  <footer class="app-footer">
+  <p>
+    <a href="https://www.instagram.com/_dheeraj_koila_?igsh=MTZxN3hvcjhiZ3JzZw==" target="_blank" class="instagram-link" title="Follow on Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+      Developed by <span>Dheeraj Koila</span>
+    </a>
+  </p>
+</footer>
+</div>
+</div>
+
+<script>
+  function addSubject(data = {}) {
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = `
+    <div class="index"></div>
+    <input placeholder="Subject" value="${data.subject || ""}" class="subject-input">
+    <input type="number" placeholder="Credits" value="${data.credits || ""}" class="subject-input">
+    <input type="number" placeholder="Marks" value="${data.marks || ""}" oninput="checkFail(this)" class="subject-input">
+    <button class="delete" onclick="deleteRow(this)">✖</button>
+  `;
+
+  row.querySelectorAll("input").forEach(inp => {
+    inp.addEventListener("input", saveData);
+  });
+
+  document.getElementById("subjects").appendChild(row);
+  reorder();
+  setupEnterNavigation();
+  saveData();
+}
+
+  function deleteRow(btn) {
+    btn.parentElement.remove();
+    reorder();
+    saveData();
+  }
+
+  function reorder() {
+    document.querySelectorAll(".index").forEach((el, i) => {
+      el.textContent = i + 1;
+    });
+  }
+
+  function checkFail(input) {
+    const row = input.parentElement;
+    if (Number(input.value) < 40 && input.value !== "") {
+      row.classList.add("fail");
+    } else {
+      row.classList.remove("fail");
+    }
+  }
+
+  function setupEnterNavigation() {
+    const inputs = document.querySelectorAll("#subjects input");
+    inputs.forEach((input, i) => {
+      input.onkeydown = (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (inputs[i + 1]) {
+            inputs[i + 1].focus();
+          } else {
+            addSubject();
+            setTimeout(() => {
+              document.querySelectorAll("#subjects input")[inputs.length].focus();
+            }, 0);
+          }
+        }
+      };
+    });
+  }
+
+  function gradePoint(m) {
+    if (m >= 90) return 10;
+    if (m >= 80) return 9;
+    if (m >= 70) return 8;
+    if (m >= 60) return 7;
+    if (m >= 55) return 6;
+    if (m >= 50) return 5;
+    if (m >= 40) return 4;
+    return 0;
+  }
+
+  function calculateSGPA() {
+    const rows = document.querySelectorAll("#subjects .row");
+    let credits = 0, total = 0;
+
+    rows.forEach(r => {
+      const c = Number(r.children[2].value);
+      const m = Number(r.children[3].value);
+      if (c) {
+        credits += c;
+        total += c * gradePoint(m);
+      }
+    });
+
+    if (!credits) return;
+    const sgpa = (total / credits).toFixed(2);
+    show("sgpaResult", "SGPA: " + sgpa, sgpa);
+  }
+
+  function calculateCGPA() {
+    const vals = document.getElementById("cgpaInput").value
+      .split(",")
+      .map(v => Number(v.trim()))
+      .filter(v => !isNaN(v));
+
+    if (!vals.length) return;
+    const cgpa = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2);
+    show("cgpaResult", "CGPA: " + cgpa, cgpa);
+  }
+
+  function show(id, text, value) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = "result " + (value >= 7 ? "green" : "red");
+  }
+  function calculateTarget() {
+  const current = Number(document.getElementById("currentCgpa").value);
+  const done = Number(document.getElementById("semCompleted").value);
+  const target = Number(document.getElementById("targetCgpa").value);
+  const total = Number(document.getElementById("totalSem").value);
+
+  const resultBox = document.getElementById("targetResult");
+
+  if (
+    current <= 0 || target <= 0 ||
+    done <= 0 || total <= 0 ||
+    done >= total
+  ) {
+    resultBox.textContent = "Please enter valid values";
+    resultBox.className = "result red";
+    return;
+  }
+
+  const required =
+    ((target * total) - (current * done)) / (total - done);
+
+  if (required <= 0) {
+    resultBox.textContent = "🎉 Target already achievable with current CGPA";
+    resultBox.className = "result green";
+    return;
+  }
+
+  if (required > 10) {
+    resultBox.textContent =
+      "❌ Target CGPA not realistically achievable (Required SGPA > 10)";
+    resultBox.className = "result red";
+    return;
+  }
+
+  let levelClass = "green";
+  if (required > 7) levelClass = "yellow";
+  if (required > 8.5) levelClass = "red";
+
+  resultBox.textContent =
+    "Required Average SGPA: " + required.toFixed(2);
+
+  resultBox.className = "result " + levelClass;
+}
+function saveData() {
+  const subjects = [];
+  document.querySelectorAll("#subjects .row").forEach(r => {
+    subjects.push({
+      subject: r.children[1].value,
+      credits: r.children[2].value,
+      marks: r.children[3].value
+    });
+  });
+
+  localStorage.setItem("subjects", JSON.stringify(subjects));
+  localStorage.setItem("cgpaInput", document.getElementById("cgpaInput")?.value || "");
+  localStorage.setItem("currentCgpa", document.getElementById("currentCgpa")?.value || "");
+  localStorage.setItem("semCompleted", document.getElementById("semCompleted")?.value || "");
+  localStorage.setItem("targetCgpa", document.getElementById("targetCgpa")?.value || "");
+  localStorage.setItem("totalSem", document.getElementById("totalSem")?.value || "");
+}
+window.onload = () => {
+  const savedSubjects = JSON.parse(localStorage.getItem("subjects") || "[]");
+
+  if (savedSubjects.length) {
+    document.getElementById("subjects").innerHTML = "";
+    savedSubjects.forEach(s => addSubject(s));
+  } else {
+    addSubject();
+  }
+
+  document.getElementById("cgpaInput").value =
+    localStorage.getItem("cgpaInput") || "";
+
+  document.getElementById("currentCgpa").value =
+    localStorage.getItem("currentCgpa") || "";
+
+  document.getElementById("semCompleted").value =
+    localStorage.getItem("semCompleted") || "";
+
+  document.getElementById("targetCgpa").value =
+    localStorage.getItem("targetCgpa") || "";
+
+  document.getElementById("totalSem").value =
+    localStorage.getItem("totalSem") || "8";
+};
+function clearAll() {
+  if (confirm("This will delete all saved data. Continue?")) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+</script>
+
+</body>
+</html>
