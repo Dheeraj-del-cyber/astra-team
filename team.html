@@ -22,20 +22,26 @@
 <body>
 
     <!-- Team Initialization Video Overlay -->
-    <div id="team-init-overlay" style="position: fixed; inset: 0; z-index: 100000; background: #000; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+    <div id="team-init-overlay"
+        style="position: fixed; inset: 0; z-index: 100000; background: #000; display: flex; justify-content: center; align-items: center; overflow: hidden;">
         <!-- Fullscreen Video (Muted by default) -->
-        <video id="team-init-video" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 100001; pointer-events: none;">
+        <video id="team-init-video" autoplay muted playsinline
+            style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 100001; pointer-events: none;">
             <source src="team initialization/InShot_20260420_103519614.mp4" type="video/mp4">
         </video>
 
         <!-- Minimal Audio Unlocker (Bottom Right) -->
-        <div id="audio-unlocker" style="position: absolute; bottom: 40px; right: 40px; z-index: 100002; cursor: pointer;">
-            <button id="start-init-btn" title="Enable Sound & Start" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; width: 55px; height: 55px; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); transition: 0.4s; font-size: 1.1rem; box-shadow: 0 0 20px rgba(0,0,0,0.4);">
+        <div id="audio-unlocker"
+            style="position: absolute; bottom: 40px; right: 40px; z-index: 100002; cursor: pointer;">
+            <button id="start-init-btn" title="Enable Sound & Start"
+                style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; width: 55px; height: 55px; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); transition: 0.4s; font-size: 1.1rem; box-shadow: 0 0 20px rgba(0,0,0,0.4);">
                 <i class="fas fa-volume-mute"></i>
             </button>
         </div>
-        
-        <p style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; color: rgba(255,255,255,0.2); font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 5px; z-index: 100004; pointer-events: none;">Theme: Avengers</p>
+
+        <p
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; color: rgba(255,255,255,0.2); font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 5px; z-index: 100004; pointer-events: none;">
+            Theme: Avengers</p>
     </div>
 
     <!-- Main Team Content (Initially Hidden) -->
@@ -46,7 +52,7 @@
             <div class="glow-orb orb-1"></div>
             <div class="glow-orb orb-2"></div>
             <div class="glow-orb orb-3"></div>
-            
+
             <!-- Avengers Tech Rings -->
             <div class="avengers-ring ring-1"></div>
             <div class="avengers-ring ring-2"></div>
@@ -85,7 +91,8 @@
         <section class="team-section">
             <div class="container">
                 <div class="section-header reveal">
-                    <h1 class="section-title main-team-title" style="animation: mainTitleEntry 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) both 1s;">THE&nbsp;<span
+                    <h1 class="section-title main-team-title"
+                        style="animation: mainTitleEntry 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) both 1s;">THE&nbsp;<span
                             class="text-gradient">TEAM</span>&nbsp;ASTRA</h1>
                     <div class="divider"></div>
                     <p
@@ -177,28 +184,8 @@
                     </div>
                 </div>
 
-                <!-- Robotics Category -->
-                <div class="team-category section-header reveal">
-                    <h2 class="text-gradient">ROBOTICS</h2>
-                    <div class="divider"></div>
-                </div>
 
-                <div class="team-grid robotics-grid reveal-delay">
-                    <!-- Robotics Member 1 -->
-                    <div class="member-card">
-                        <div class="member-photo-wrapper">
-                            <img src="assests/aditiya.jpg" alt="Aditya" class="member-photo">
-                        </div>
-                        <span class="role">Robotics Wing</span>
-                        <h3>ADITHYA</h3>
-                        <div class="member-links">
-                            <a href="https://www.linkedin.com/in/adithya-u-kumar-7a9913383?utm_source=share_via&utm_content=profile&utm_medium=member_android"
-                                target="_blank"><i class="fab fa-linkedin"></i></a>
-                            <a href="https://www.instagram.com/adi__gowda16?igsh=N3djdDB4MXF5dzVn" target="_blank"><i
-                                    class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
+
 
             </div>
         </section>
@@ -232,7 +219,8 @@
     </div> <!-- End Page Wrapper -->
 
     <!-- Background Music -->
-    <audio id="bg-music" loop preload="auto" style="position: absolute; width: 1px; height: 1px; visibility: hidden; pointer-events: none; z-index: -1;">
+    <audio id="bg-music" loop preload="auto"
+        style="position: absolute; width: 1px; height: 1px; visibility: hidden; pointer-events: none; z-index: -1;">
         <source src="song/WhatsApp%20Video%202026-04-20%20at%2010.50.30%20PM.mp4" type="audio/mp4">
     </audio>
 
@@ -255,7 +243,7 @@
 
         function toggleSound() {
             if (!bgMusic) return;
-            
+
             if (bgMusic.paused) {
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
@@ -286,10 +274,10 @@
             // Initial flash/glitch state
             teamWrapper.style.filter = 'blur(40px) brightness(2) contrast(300%)';
             teamWrapper.style.opacity = '0';
-            
+
             teamOverlay.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
             teamOverlay.style.opacity = '0';
-            
+
             // Materialize the content
             setTimeout(() => {
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -312,7 +300,7 @@
                 teamInitVideo.load();
                 teamInitVideo.remove();
             }
-            
+
             // Background music should already be playing, but ensure it is
             if (bgMusic && bgMusic.paused) {
                 bgMusic.play().then(() => {
@@ -321,7 +309,7 @@
             } else {
                 updateSoundIcon();
             }
-            
+
             setTimeout(() => {
                 teamOverlay.style.display = 'none';
                 if (typeof $ !== 'undefined' && $('body').ripples) {
@@ -333,11 +321,11 @@
 
         // Invisible Audio Unlocker Logic
         const audioUnlocker = document.getElementById('audio-unlocker');
-        
+
         const handleAudioUnlock = () => {
             // 1. Silent trigger to unlock global audio context (crucial for iOS)
             const silent = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA== ");
-            silent.play().catch(() => {});
+            silent.play().catch(() => { });
 
             // 2. Dual Play - Explicitly start both
             if (teamInitVideo) {
@@ -349,12 +337,12 @@
                 // Triple-check audio state for mobile
                 bgMusic.muted = false;
                 bgMusic.volume = 1.0;
-                
+
                 // Re-prime the source if needed
                 if (bgMusic.readyState === 0) {
                     bgMusic.load();
                 }
-                
+
                 const playPromise = bgMusic.play();
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
@@ -368,7 +356,7 @@
                     });
                 }
             }
-            
+
             // Cleanup
             if (audioUnlocker) audioUnlocker.style.display = 'none';
             document.removeEventListener('click', handleAudioUnlock);
@@ -381,7 +369,7 @@
             audioUnlocker.addEventListener('touchstart', handleAudioUnlock);
             audioUnlocker.addEventListener('mousedown', handleAudioUnlock);
         }
-        
+
         // General backup listeners
         document.addEventListener('click', handleAudioUnlock);
         document.addEventListener('touchstart', handleAudioUnlock);
@@ -393,7 +381,7 @@
         // Start Button Hover Effects
         const startInitBtn = document.getElementById('start-init-btn');
         const btnGlint = document.getElementById('btn-glint');
-        
+
         if (startInitBtn) {
             startInitBtn.onmouseenter = () => {
                 startInitBtn.style.background = 'rgba(255,255,255,0.2)';
@@ -413,7 +401,7 @@
             teamInitVideo.play().catch(() => {
                 console.log("Autoplay blocked - waiting for manual start.");
             });
-            
+
             // Warm up background music
             if (bgMusic) {
                 bgMusic.load();
@@ -424,7 +412,7 @@
         $(document).ready(function () {
             try {
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                
+
                 // SKIPPING RIPPLE EFFECT ON MOBILE PER USER REQUEST
                 if (!isMobile) {
                     $('body').ripples({
