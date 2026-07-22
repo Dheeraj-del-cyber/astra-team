@@ -1,6 +1,6 @@
 ﻿# ASTRA — Tech Student Team Website
 
-> *Beyond the Stars*
+> *Beyond the Stars.*
 
 A futuristic, cinematic website for **ASTRA**, a tech student team focused on innovation through hackathons, robotics, AI/ML, and ideathons. Built with a dark Avengers-inspired aesthetic featuring liquid chrome effects, animated intros, and immersive audio-visual experiences.
 
